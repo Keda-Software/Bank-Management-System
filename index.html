@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<div class="login-page" id="loginPage">
+
+    <div class="login-card">
+
+        <div class="bank-logo">
+            🏦
+        </div>
+
+        <h1>Bank Management</h1>
+
+        <p>Secure Banking System</p>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label>Username</label>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+            <p class="login-error" id="loginError"></p>
+
+        </form>
+
+        <div class="demo-login">
+            Demo: admin / 1234
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MAIN APPLICATION ================= -->
+
+<div class="app" id="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏦
+            <span>SecureBank</span>
+        </div>
+
+        <nav>
+
+            <button
+                class="nav-btn active"
+                onclick="showSection('dashboard', this)"
+            >
+                📊 Dashboard
+            </button>
+
+            <button
+                class="nav-btn"
+                onclick="showSection('accounts', this)"
+            >
+                👤 Accounts
+            </button>
+
+            <button
+                class="nav-btn"
+                onclick="showSection('transactions', this)"
+            >
+                💳 Transactions
+            </button>
+
+            <button
+                class="nav-btn"
+                onclick="showSection('deposit', this)"
+            >
+                💰 Deposit
+            </button>
+
+            <button
+                class="nav-btn"
+                onclick="showSection('withdraw', this)"
+            >
+                💸 Withdraw
+            </button>
+
+            <button
+                class="nav-btn"
+                onclick="showSection('transfer', this)"
+            >
+                🔄 Transfer
+            </button>
+
+        </nav>
+
+        <button class="logout-btn" onclick="logout()">
+            🚪 Logout
+        </button>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <button
+                    class="mobile-menu"
+                    onclick="toggleSidebar()"
+                >
+                    ☰
+                </button>
+
+                <h2 id="pageTitle">
+                    Dashboard
+                </h2>
+
+            </div>
+
+            <div class="top-actions">
+
+                <button
+                    class="icon-btn"
+                    onclick="toggleDarkMode()"
+                >
+                    🌙
+                </button>
+
+                <span class="notification">
+                    🔔
+                </span>
+
+                <div class="admin">
+                    👨‍💼 Admin
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+
+            <!-- ================= DASHBOARD ================= -->
+
+            <section
+                class="section active"
+                id="dashboard"
+            >
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div>
+                            <p>Total Accounts</p>
+
+                            <h2 id="totalAccounts">
+                                0
+                            </h2>
+                        </div>
+
+                        <div class="stat-icon blue">
+                            👥
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div>
+                            <p>Total Balance</p>
+
+                            <h2 id="totalBalance">
+                                $0.00
+                            </h2>
+                        </div>
+
+                        <div class="stat-icon green">
+                            💰
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div>
+                            <p>Deposits</p>
+
+                            <h2 id="totalDeposits">
+                                $0.00
+                            </h2>
+                        </div>
+
+                        <div class="stat-icon purple">
+                            📥
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div>
+                            <p>Withdrawals</p>
+
+                            <h2 id="totalWithdrawals">
+                                $0.00
+                            </h2>
+                        </div>
+
+                        <div class="stat-icon red">
+                            📤
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            Quick Actions
+                        </h3>
+
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <button
+                            onclick="showSection('accounts')"
+                            class="action-card"
+                        >
+                            👤
+                            <span>Accounts</span>
+                        </button>
+
+                        <button
+                            onclick="showSection('deposit')"
+                            class="action-card"
+                        >
+                            💰
+                            <span>Deposit</span>
+                        </button>
+
+                        <button
+                            onclick="showSection('withdraw')"
+                            class="action-card"
+                        >
+                            💸
+                            <span>Withdraw</span>
+                        </button>
+
+                        <button
+                            onclick="showSection('transfer')"
+                            class="action-card"
+                        >
+                            🔄
+                            <span>Transfer</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RECENT TRANSACTIONS -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            Recent Transactions
+                        </h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="showSection('transactions')"
+                        >
+                            View All
+                        </button>
+
+                    </div>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Account</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="recentTransactions">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ACCOUNTS ================= -->
+
+            <section
+                class="section"
+                id="accounts"
+            >
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            Bank Accounts
+                        </h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openAccountModal()"
+                        >
+                            + New Account
+                        </button>
+
+                    </div>
+
+
+                    <div class="toolbar">
+
+                        <input
+                            type="text"
+                            id="accountSearch"
+                            placeholder="🔎 Search account..."
+                            oninput="renderAccounts()"
+                        >
+
+                        <select
+                            id="accountTypeFilter"
+                            onchange="renderAccounts()"
+                        >
+
+                            <option value="">
+                                All Account Types
+                            </option>
+
+                            <option value="Savings">
+                                Savings
+                            </option>
+
+                            <option value="Checking">
+                                Checking
+                            </option>
+
+                            <option value="Business">
+                                Business
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Account No.</th>
+                                    <th>Customer</th>
+                                    <th>Email</th>
+                                    <th>Type</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="accountTable">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= TRANSACTIONS ================= -->
+
+            <section
+                class="section"
+                id="transactions"
+            >
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            Transaction History
+                        </h3>
+
+                    </div>
+
+
+                    <div class="toolbar">
+
+                        <input
+                            type="text"
+                            id="transactionSearch"
+                            placeholder="🔎 Search transaction..."
+                            oninput="renderTransactions()"
+                        >
+
+                        <select
+                            id="transactionTypeFilter"
+                            onchange="renderTransactions()"
+                        >
+
+                            <option value="">
+                                All Transactions
+                            </option>
+
+                            <option value="Deposit">
+                                Deposit
+                            </option>
+
+                            <option value="Withdrawal">
+                                Withdrawal
+                            </option>
+
+                            <option value="Transfer">
+                                Transfer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Account</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="transactionTable">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= DEPOSIT ================= -->
+
+            <section
+                class="section"
+                id="deposit"
+            >
+
+                <div class="form-card">
+
+                    <h3>
+                        💰 Make Deposit
+                    </h3>
+
+                    <p class="form-description">
+                        Add money to a customer's account.
+                    </p>
+
+                    <form id="depositForm">
+
+                        <div class="form-group">
+
+                            <label>
+                                Account Number
+                            </label>
+
+                            <select
+                                id="depositAccount"
+                                required
+                            >
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Amount
+                            </label>
+
+                            <input
+                                type="number"
+                                id="depositAmount"
+                                min="1"
+                                step="0.01"
+                                placeholder="Enter amount"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Description
+                            </label>
+
+                            <input
+                                type="text"
+                                id="depositDescription"
+                                placeholder="Deposit description"
+                            >
+
+                        </div>
+
+
+                        <button
+                            class="btn btn-success full-btn"
+                        >
+                            💰 Deposit Money
+                        </button>
+
+                    </form>
+
+                    <p
+                        id="depositMessage"
+                        class="message"
+                    ></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= WITHDRAW ================= -->
+
+            <section
+                class="section"
+                id="withdraw"
+            >
+
+                <div class="form-card">
+
+                    <h3>
+                        💸 Make Withdrawal
+                    </h3>
+
+                    <p class="form-description">
+                        Withdraw money from a customer's account.
+                    </p>
+
+                    <form id="withdrawForm">
+
+                        <div class="form-group">
+
+                            <label>
+                                Account Number
+                            </label>
+
+                            <select
+                                id="withdrawAccount"
+                                required
+                            >
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Amount
+                            </label>
+
+                            <input
+                                type="number"
+                                id="withdrawAmount"
+                                min="1"
+                                step="0.01"
+                                placeholder="Enter amount"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Description
+                            </label>
+
+                            <input
+                                type="text"
+                                id="withdrawDescription"
+                                placeholder="Withdrawal description"
+                            >
+
+                        </div>
+
+
+                        <button
+                            class="btn btn-danger full-btn"
+                        >
+                            💸 Withdraw Money
+                        </button>
+
+                    </form>
+
+                    <p
+                        id="withdrawMessage"
+                        class="message"
+                    ></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= TRANSFER ================= -->
+
+            <section
+                class="section"
+                id="transfer"
+            >
+
+                <div class="form-card">
+
+                    <h3>
+                        🔄 Transfer Money
+                    </h3>
+
+                    <p class="form-description">
+                        Transfer money between accounts.
+                    </p>
+
+                    <form id="transferForm">
+
+                        <div class="form-group">
+
+                            <label>
+                                From Account
+                            </label>
+
+                            <select
+                                id="fromAccount"
+                                required
+                            >
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                To Account
+                            </label>
+
+                            <select
+                                id="toAccount"
+                                required
+                            >
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Amount
+                            </label>
+
+                            <input
+                                type="number"
+                                id="transferAmount"
+                                min="1"
+                                step="0.01"
+                                placeholder="Enter amount"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Description
+                            </label>
+
+                            <input
+                                type="text"
+                                id="transferDescription"
+                                placeholder="Transfer description"
+                            >
+
+                        </div>
+
+
+                        <button
+                            class="btn btn-primary full-btn"
+                        >
+                            🔄 Transfer Money
+                        </button>
+
+                    </form>
+
+                    <p
+                        id="transferMessage"
+                        class="message"
+                    ></p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ================= ACCOUNT MODAL ================= -->
+
+<div
+    class="modal"
+    id="accountModal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>
+                Create Bank Account
+            </h2>
+
+            <button
+                class="close"
+                onclick="closeAccountModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="accountForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        First Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="firstName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Last Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="lastName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Account Type
+                    </label>
+
+                    <select
+                        id="accountType"
+                        required
+                    >
+
+                        <option value="">
+                            Select type
+                        </option>
+
+                        <option value="Savings">
+                            Savings
+                        </option>
+
+                        <option value="Checking">
+                            Checking
+                        </option>
+
+                        <option value="Business">
+                            Business
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Initial Deposit
+                    </label>
+
+                    <input
+                        type="number"
+                        id="initialDeposit"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="closeAccountModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Create Account
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+
+<script src="script.js"></script>
+
+</body>
+</html>
